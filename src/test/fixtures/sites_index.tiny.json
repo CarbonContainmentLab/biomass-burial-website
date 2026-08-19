@@ -1,0 +1,72 @@
+{
+ "version": 1,
+ "file": "sites.tiny.bin",
+ "bytes": 54,
+ "count": 5,
+ "byte_order": "little",
+ "crs": "EPSG:5070",
+ "units": "metres",
+ "distance": "euclidean",
+ "encoding": {
+  "coordinates": "delta",
+  "quantisation_m": 1
+ },
+ "layout": [
+  {
+   "field": "count",
+   "dtype": "int32",
+   "offset": 0,
+   "length": 1
+  },
+  {
+   "field": "dx",
+   "dtype": "int32",
+   "offset": 4,
+   "length": 5
+  },
+  {
+   "field": "dy",
+   "dtype": "int32",
+   "offset": 24,
+   "length": 5
+  },
+  {
+   "field": "depth_cm",
+   "dtype": "uint16",
+   "offset": 44,
+   "length": 5
+  }
+ ],
+ "depth": {
+  "units": "centimetres",
+  "min_cm": 50,
+  "max_cm": 500
+ },
+ "sites_for_reference": [
+  {
+   "x": -1500000,
+   "y": 2000000,
+   "cm": 500
+  },
+  {
+   "x": -1499000,
+   "y": 2000000,
+   "cm": 300
+  },
+  {
+   "x": -1498000,
+   "y": 2000000,
+   "cm": 300
+  },
+  {
+   "x": -1450000,
+   "y": 2000000,
+   "cm": 100
+  },
+  {
+   "x": -1400000,
+   "y": 2000000,
+   "cm": 50
+  }
+ ]
+}

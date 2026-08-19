@@ -1,0 +1,50 @@
+{
+  "name": "burial-siting-tool",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "description": "Public-facing biomass burial siting tool — Carbon Containment Lab",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc -b && vite build",
+    "preview": "vite preview",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "e2e": "playwright test",
+    "typecheck": "tsc -b",
+    "budget": "node scripts/check-budget.mjs"
+  },
+  "dependencies": {
+    "@deck.gl/core": "9.3.10",
+    "@deck.gl/extensions": "9.3.10",
+    "@deck.gl/layers": "9.3.10",
+    "@deck.gl/mapbox": "^9.3.10",
+    "@deck.gl/react": "9.3.10",
+    "@luma.gl/core": "9.3.6",
+    "@luma.gl/engine": "9.3.6",
+    "@math.gl/web-mercator": "4.1.0",
+    "@protomaps/basemaps": "^5.7.2",
+    "geotiff": "3.0.5",
+    "maplibre-gl": "^5.24.0",
+    "pmtiles": "^4.5.0",
+    "proj4": "2.21.0",
+    "react": "19.2.8",
+    "react-dom": "19.2.8",
+    "zustand": "5.0.15"
+  },
+  "devDependencies": {
+    "@playwright/test": "1.62.1",
+    "@types/geojson": "7946.0.16",
+    "@types/node": "26.2.0",
+    "@types/react": "19.2.18",
+    "@types/react-dom": "19.2.4",
+    "@vitejs/plugin-react": "5.0.4",
+    "jsdom": "30.0.1",
+    "typescript": "5.9.3",
+    "vite": "6.4.3",
+    "vitest": "4.1.10"
+  },
+  "allowScripts": {
+    "esbuild@0.25.12": true
+  }
+}

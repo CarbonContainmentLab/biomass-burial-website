@@ -1,0 +1,47 @@
+/* ==========================================================================
+   Archivo, self-hosted.
+
+   `03 §22` item 2 left the type question open, and `04_BUILD_PLAN §5.1` shipped
+   web-safe stacks rather than settle it. Archivo settles it: it is SIL Open Font
+   License 1.1 (© 2020 The Archivo Project Authors, Omnibus-Type), so
+   self-hosting is explicitly permitted. `public/fonts/OFL.txt` is the copy of
+   the licence the OFL requires to travel with the binaries — it is not
+   incidental, do not prune it as an unused asset.
+
+   Self-hosted rather than fetched from fonts.gstatic.com because this page has
+   no third-party runtime dependencies at all: `02 §7` records that the mockup's
+   CDN tile layer and its jsDelivr / GitHub-raw fetches were deliberately
+   replaced by pipeline outputs, on the grounds that they can move or
+   rate-limit. A webfont CDN is the same bet, and it also leaks every visitor's
+   IP to a third party on a page that ships no analytics by decision (`03 §0`).
+
+   One variable file per subset, weight axis 100–900, so the 400 / 500 / 700
+   this app uses cost one download rather than three. The `unicode-range` split
+   is Google's own: a visitor loading English text fetches `latin` (34 KB) and
+   never touches `latin-ext`.
+   ========================================================================== */
+
+/* latin-ext — not fetched for English text. Present so an accented place name
+   from a future pipeline run renders in Archivo rather than falling back. */
+@font-face {
+  font-family: 'Archivo';
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+  src: url('/fonts/archivo-latin-ext.woff2') format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304,
+    U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0,
+    U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+
+/* latin — the subset that actually ships to a reader of this page. */
+@font-face {
+  font-family: 'Archivo';
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+  src: url('/fonts/archivo-latin.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC,
+    U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215,
+    U+FEFF, U+FFFD;
+}

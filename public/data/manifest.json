@@ -1,0 +1,678 @@
+{
+  "build": {
+    "hash": "17810604f38f",
+    "hash_sha256": "17810604f38fd4ceb52f32658308bb3c2b6f17918207732264c0165ee51d53cf",
+    "hash_covers": "raw inputs, config.yaml, run.py, stages, lib",
+    "built_utc": "2026-08-18T19:35:58Z",
+    "pipeline_version": "1.0.0",
+    "code_files": 17
+  },
+  "decisions": {
+    "depth": {
+      "default_max_m": 10.0,
+      "display_max_m": 10.0,
+      "display_encoding": "uint16 centimetres, 0 = nodata",
+      "units": "metres of soil cover required",
+      "model_feasibility_ceiling_m": 6.67,
+      "beyond_ceiling_band_m": [
+        6.67,
+        10.0
+      ]
+    },
+    "crs": {
+      "analysis": "+proj=lcc +lat_0=42.5 +lon_0=-100 +lat_1=25 +lat_2=60 +x_0=0.0 +y_0=0.0 +ellps=GRS80 +units=m +no_defs +type=crs",
+      "display": "EPSG:3857",
+      "distance": "EPSG:5070",
+      "distance_note": "Distances ship in EPSG:5070 rather than the analysis LCC, which runs about 4.5% short over the study area. Stages 06 and 07 both use it so the BECCS panel and the radius search measure the same miles."
+    },
+    "wildfire_hazard": {
+      "class_breaks": [
+        61,
+        178,
+        489,
+        1985
+      ],
+      "class_labels": [
+        "very low",
+        "low",
+        "moderate",
+        "high",
+        "very high"
+      ],
+      "masked": "non-burnable and open water are transparent"
+    },
+    "beccs": {
+      "default_scenario_pct": 25,
+      "scenarios_pct": [
+        25,
+        50,
+        75,
+        90,
+        99
+      ],
+      "search_radius_mi": 250,
+      "min_forestry_fraction": 0.0
+    },
+    "thinning": {
+      "format": "geojson",
+      "simplify_tolerance_deg": 0.002,
+      "clipping": "whole landscapes kept; none cut to the study bounds"
+    },
+    "sites": {
+      "crs": "EPSG:5070",
+      "encoding": "int32 delta-coded metres, raster scan order",
+      "bytes_per_site": 10,
+      "count": 871094
+    }
+  },
+  "sources": [
+    {
+      "id": "burial_depth",
+      "citation": "Clayton, Leah. 2026. leah-clayton/biomass-carbon-storage: v1.1 [Data set]. Zenodo. https://doi.org/10.5281/zenodo.20273624",
+      "files": [
+        {
+          "file": "req_soil_depth_95th_v35_aet05_1km_finalclip_mskd.tif",
+          "bytes": 14714273,
+          "sha256": "7ff6b54bc1ccf08e6a369e0d119c92c3ae5856b5401e803508f1e92fcf439bb7"
+        }
+      ],
+      "doi": "10.5281/zenodo.20273624",
+      "note": "version DOI for v1.1, not the concept DOI",
+      "used_by": [
+        "s01_depth"
+      ]
+    },
+    {
+      "id": "county_biomass",
+      "citation": "Clayton, Leah. 2026. leah-clayton/biomass-carbon-storage: v1.1 [Data set]. Zenodo. https://doi.org/10.5281/zenodo.20273624",
+      "files": [
+        {
+          "file": "county_stats/acreage_scenario_supplement.xlsx",
+          "bytes": 730966,
+          "sha256": "a39459ab8cb3eaa8874d7d9010940b287b08ef1ba76c807bab0807ecb7b71f40"
+        },
+        {
+          "file": "county_stats/biomass_centroids.csv",
+          "bytes": 60432,
+          "sha256": "19eaf86b457310cfe3eefa6dc26a1a1a374821a6652497da31dca53bcb0e1f17"
+        },
+        {
+          "file": "county_stats/TEA_supplement.xlsx",
+          "bytes": 174514,
+          "sha256": "13200633b30ebb3374135a612e78e7e08abc6ee04bd297dcd4c33991f5522c09"
+        },
+        {
+          "file": "county_stats/west_us_county_biomass.cpg",
+          "bytes": 5,
+          "sha256": "3ad3031f5503a4404af825262ee8232cc04d4ea6683d42c5dd0a2f2a27ac9824"
+        },
+        {
+          "file": "county_stats/west_us_county_biomass.dbf",
+          "bytes": 496078,
+          "sha256": "531649780f1bbb8e112572953f4b549b3388830bee9a8ec281949ccb70e877dd"
+        },
+        {
+          "file": "county_stats/west_us_county_biomass.prj",
+          "bytes": 145,
+          "sha256": "a02a27b1d1982c8516d83398e85a3c8b1aef1713c13ef4d84d7bde17430c07c4"
+        },
+        {
+          "file": "county_stats/west_us_county_biomass.sbn",
+          "bytes": 4340,
+          "sha256": "b2bb5e599a2a20eac5a4085694d18318db3de4c207249fd6ea5681c821a1b229"
+        },
+        {
+          "file": "county_stats/west_us_county_biomass.sbx",
+          "bytes": 540,
+          "sha256": "418bcddb90bae7636125a8ab0a009d62199e864dec6eed9848860e47270db69c"
+        },
+        {
+          "file": "county_stats/west_us_county_biomass.shp",
+          "bytes": 19273116,
+          "sha256": "2006014421601441c4bf5f47d86b832def65d87003f070db0dbc03c8266a5723"
+        },
+        {
+          "file": "county_stats/west_us_county_biomass.shx",
+          "bytes": 3412,
+          "sha256": "b33d35a3276731650064a19b89662ebb5b6ee054f7966d9a6f10839b78792222"
+        }
+      ],
+      "doi": "10.5281/zenodo.20273624",
+      "used_by": [
+        "s03_county_stats"
+      ]
+    },
+    {
+      "id": "beccs_end_nodes",
+      "citation": "Clayton, Leah. 2026. leah-clayton/biomass-carbon-storage: v1.1 [Data set]. Zenodo. https://doi.org/10.5281/zenodo.20273624",
+      "files": [
+        {
+          "file": "Beccs/beccs_end_nodes.csv",
+          "bytes": 122728,
+          "sha256": "994a07d73b2dc94ac97bb2a4e007309c56ab5526b9b8f60a1b956c009ddfd7ab"
+        }
+      ],
+      "doi": "10.5281/zenodo.20273624",
+      "used_by": [
+        "s06_beccs"
+      ]
+    },
+    {
+      "id": "census_boundaries",
+      "citation": "U.S. Census Bureau. 2025. Cartographic Boundary Files: Counties and States, 1:5,000,000. Washington, DC: U.S. Department of Commerce. https://www.census.gov/geographies/mapping-files/time-series/geo/cartographic-boundary.html",
+      "files": [
+        {
+          "file": "County_Census/cb_2025_us_county_5m.cpg",
+          "bytes": 5,
+          "sha256": "3ad3031f5503a4404af825262ee8232cc04d4ea6683d42c5dd0a2f2a27ac9824"
+        },
+        {
+          "file": "County_Census/cb_2025_us_county_5m.dbf",
+          "bytes": 1181193,
+          "sha256": "125e983abb46ff5a48e01f878c6ed91a92a3f42738a2da061d4a388ffc94fa17"
+        },
+        {
+          "file": "County_Census/cb_2025_us_county_5m.prj",
+          "bytes": 165,
+          "sha256": "0b9041e921d9ebb43247d314608fe9e38a0b008ee793067fc1806199ea1fb9dd"
+        },
+        {
+          "file": "County_Census/cb_2025_us_county_5m.shp",
+          "bytes": 3826576,
+          "sha256": "622bc050d9b6631f05dfc2c071c21ceddeef202c2a95e5cb6a364acc28afae4d"
+        },
+        {
+          "file": "County_Census/cb_2025_us_county_5m.shp.ea.iso.xml",
+          "bytes": 26758,
+          "sha256": "c17b6971426326438609d5bfa0d02b88855b8ed3d19c907f2fcf6b4bc95042d2"
+        },
+        {
+          "file": "County_Census/cb_2025_us_county_5m.shp.iso.xml",
+          "bytes": 47478,
+          "sha256": "cce5ffe2e16cef48b248a4c1a6b997761a88786eaec39204102a06fc6eba864d"
+        },
+        {
+          "file": "County_Census/cb_2025_us_county_5m.shx",
+          "bytes": 25980,
+          "sha256": "31efb0f9c4f716f8d8c3912ef6958587ba7c3bfcbb77ab8c43fd37b6672271e5"
+        },
+        {
+          "file": "State_Census/cb_2025_us_state_5m.cpg",
+          "bytes": 5,
+          "sha256": "3ad3031f5503a4404af825262ee8232cc04d4ea6683d42c5dd0a2f2a27ac9824"
+        },
+        {
+          "file": "State_Census/cb_2025_us_state_5m.dbf",
+          "bytes": 9058,
+          "sha256": "4c7cb30f68b9c3d3d8a8063176f416990db877d5acc42d008668db32ac0a6a15"
+        },
+        {
+          "file": "State_Census/cb_2025_us_state_5m.prj",
+          "bytes": 165,
+          "sha256": "0b9041e921d9ebb43247d314608fe9e38a0b008ee793067fc1806199ea1fb9dd"
+        },
+        {
+          "file": "State_Census/cb_2025_us_state_5m.shp",
+          "bytes": 1474620,
+          "sha256": "cb061a3e92775684cb7e407221179659936c9a348912257b86f1403757ccd866"
+        },
+        {
+          "file": "State_Census/cb_2025_us_state_5m.shp.ea.iso.xml",
+          "bytes": 16125,
+          "sha256": "0b9dc20fc23dc3b5516081670e1d562079278862143bc2e623b872ed8415cc03"
+        },
+        {
+          "file": "State_Census/cb_2025_us_state_5m.shp.iso.xml",
+          "bytes": 44839,
+          "sha256": "b79f7a18435caf7615c2aef0ad6c54f0399f3bf9eacd1fc7ce7a202e30581449"
+        },
+        {
+          "file": "State_Census/cb_2025_us_state_5m.shx",
+          "bytes": 548,
+          "sha256": "279e090e4940c26593ca365d9fd973062bfeed63316824aad6951bf80ccc7007"
+        }
+      ],
+      "used_by": [
+        "s02_boundaries"
+      ]
+    },
+    {
+      "id": "wildfire_hazard_potential",
+      "citation": "Dillon, Gregory K. 2023. Wildfire Hazard Potential for the United States (270-m), version 2023. 4th Edition. Updated 17 July 2024. Fort Collins, CO: Forest Service Research Data Archive. https://doi.org/10.2737/RDS-2015-0047-4",
+      "files": [
+        {
+          "file": "whp/whp2023_cls_conus.tfw",
+          "bytes": 96,
+          "sha256": "ac7a74cc823cacea2dd0a4755cbf4d7db6446a714af278822b2ef9c5d6b35c4e"
+        },
+        {
+          "file": "whp/whp2023_cls_conus.tif",
+          "bytes": 23226983,
+          "sha256": "2c5460c7954fbe829d32c2207e9ea348f481cb820c291f26653e667ea5ff627b"
+        },
+        {
+          "file": "whp/whp2023_cls_conus.tif.aux.xml",
+          "bytes": 1010,
+          "sha256": "fe923bff8450e20ddf2733ea4df06e6f4ef70dc203832182abb0981566c898d6"
+        },
+        {
+          "file": "whp/whp2023_cls_conus.tif.vat.dbf",
+          "bytes": 2118,
+          "sha256": "bf61a6b133a9d28e0e2407e872c575e358dba2f9949ce9ebd283fe5c40cec310"
+        },
+        {
+          "file": "whp/whp2023_cls_conus.tif.xml",
+          "bytes": 39912,
+          "sha256": "d96d8e037cf764d1de07fc586ed0236846edd79db570b4217c8acfc04b74b80c"
+        },
+        {
+          "file": "whp/whp2023_cnt_conus.tfw",
+          "bytes": 96,
+          "sha256": "ac7a74cc823cacea2dd0a4755cbf4d7db6446a714af278822b2ef9c5d6b35c4e"
+        },
+        {
+          "file": "whp/whp2023_cnt_conus.tif",
+          "bytes": 143457819,
+          "sha256": "0e427305bd62eaa0a389b36a0a053c53c8bd58a905312a387007794c84edf236"
+        },
+        {
+          "file": "whp/whp2023_cnt_conus.tif.aux.xml",
+          "bytes": 2094,
+          "sha256": "4382050f760de53d418c63f4c5e7d2b2178d6b3d6cdddbec1e3d155272430635"
+        },
+        {
+          "file": "whp/whp2023_cnt_conus.tif.vat.dbf",
+          "bytes": 98,
+          "sha256": "76660e1ee7d20fbff67f0b4fd46c747f2bdfee6930d19827f36c7eebaea95e4a"
+        },
+        {
+          "file": "whp/whp2023_cnt_conus.tif.xml",
+          "bytes": 39862,
+          "sha256": "dfb92da9d10bb99b1e8f4636b7b094ca901e17bf3d2b0416bb7d99c9b62cc1d6"
+        }
+      ],
+      "doi": "10.2737/RDS-2015-0047-4",
+      "used_by": [
+        "s04_whp"
+      ]
+    },
+    {
+      "id": "thinning_landscapes",
+      "citation": "U.S. Forest Service. 2023. Wildfire Crisis Strategy Landscapes (Feature Layer). USDA Forest Service Enterprise Data Warehouse. Published 27 September 2022, revised 8 June 2023. CC BY 4.0. https://data-usfs.hub.arcgis.com/datasets/usfs::wildfire-crisis-strategy-landscapes-feature-layer",
+      "files": [
+        {
+          "file": "thinning/Wildfire_Crisis_Strategy_Landscapes_(Feature_Layer).cpg",
+          "bytes": 5,
+          "sha256": "3ad3031f5503a4404af825262ee8232cc04d4ea6683d42c5dd0a2f2a27ac9824"
+        },
+        {
+          "file": "thinning/Wildfire_Crisis_Strategy_Landscapes_(Feature_Layer).dbf",
+          "bytes": 3515,
+          "sha256": "d0d4809fc364b1f53841527f4671602a60a7a96056ad4a9ac1ac45172563b33a"
+        },
+        {
+          "file": "thinning/Wildfire_Crisis_Strategy_Landscapes_(Feature_Layer).prj",
+          "bytes": 167,
+          "sha256": "84cf5b9a3c1a444f83ac30ff76f8c5035990223027ba69b2f4d628388adcbd65"
+        },
+        {
+          "file": "thinning/Wildfire_Crisis_Strategy_Landscapes_(Feature_Layer).shp",
+          "bytes": 4626552,
+          "sha256": "812878d5dc3ae77d1bbbde881c46ef115081a7fd3d5a59ed894b090eb5418232"
+        },
+        {
+          "file": "thinning/Wildfire_Crisis_Strategy_Landscapes_(Feature_Layer).shx",
+          "bytes": 268,
+          "sha256": "d5b98cf662768823e18f2ce07c3af338bc38d2801bb389342fb675c865044d10"
+        },
+        {
+          "file": "thinning/Wildfire_Crisis_Strategy_Landscapes_(Feature_Layer).xml",
+          "bytes": 22433,
+          "sha256": "d81175cb94b722173e9daacd5f5cb3e785a41c9bde90b538666c57e0f9dca270"
+        }
+      ],
+      "used_by": [
+        "s05_thinning"
+      ]
+    }
+  ],
+  "outputs": [
+    {
+      "file": "basemap-west-z9.pmtiles",
+      "stage": "fetched",
+      "bytes": 36770242,
+      "transfer_bytes": 36770242,
+      "sha256": "cd496a9d62966c0e3138456cd1fffbaea64055d60f9828a4859bd967fe3bfd3b"
+    },
+    {
+      "file": "beccs.geojson",
+      "stage": "s06_beccs",
+      "bytes": 119326,
+      "transfer_bytes": 15016,
+      "sha256": "b67a563e859308a9e03ad1dedd67e914b494d178e9efc0ae71c7226d15cd86bd"
+    },
+    {
+      "file": "counties_biomass.geojson",
+      "stage": "s03_county_stats",
+      "bytes": 1263737,
+      "transfer_bytes": 303918,
+      "sha256": "7e6f5f6c8744669d8fc232552cedac271a1745af701f920267d8b53315855693"
+    },
+    {
+      "file": "counties_west.geojson",
+      "stage": "s02_boundaries",
+      "bytes": 1225809,
+      "transfer_bytes": 296845,
+      "sha256": "5828bb4781e6c8f4ec8dbdd3ddf36dd2e06a68f9930e9f45efb921e4e6ab093d"
+    },
+    {
+      "file": "county_stats.json",
+      "stage": "s03_county_stats",
+      "bytes": 221942,
+      "transfer_bytes": 38833,
+      "sha256": "fac7a9f405827d298cb4bcd20db05fb878c80d2f474c6940089d10eeb5c58d6f"
+    },
+    {
+      "file": "depth_display.tif",
+      "stage": "s01_depth",
+      "bytes": 2942766,
+      "transfer_bytes": 2942766,
+      "sha256": "74a7b3c01e009b4a8e65e7145d0ebbcfd37d5fc83d7f6caee9f87b3f29c7f237"
+    },
+    {
+      "file": "sites.bin",
+      "stage": "s07_sites",
+      "bytes": 8710944,
+      "transfer_bytes": 2443315,
+      "sha256": "58bf74a7d1d9a65d951965272f8b02e0ddf77d1e6e9197ae0d81773eed13f32f"
+    },
+    {
+      "file": "sites_index.json",
+      "stage": "s07_sites",
+      "bytes": 1579,
+      "transfer_bytes": 713,
+      "sha256": "58b6039cf6c401a6a3b6ecf31523296da8cab489d944e38f38c9b5a7973fd2ae"
+    },
+    {
+      "file": "states_west.geojson",
+      "stage": "s02_boundaries",
+      "bytes": 296096,
+      "transfer_bytes": 80303,
+      "sha256": "18fc4727c9a83822bb06eabf22e43e8ff150a28767981b799c772409d04ee6f3"
+    },
+    {
+      "file": "thinning.geojson",
+      "stage": "s05_thinning",
+      "bytes": 327422,
+      "transfer_bytes": 88933,
+      "sha256": "d24ca31a43cb9c220209800dd294eeeab60ee0d50969410074f1914a63b599ad"
+    },
+    {
+      "file": "whp_display.tif",
+      "stage": "s04_whp",
+      "bytes": 753314,
+      "transfer_bytes": 753314,
+      "sha256": "20ea162d1290918041ef0ea47461baa3b3b7db8a2f4ce58995254ecc0403c163"
+    }
+  ],
+  "payload": {
+    "blocking": [
+      "manifest.json",
+      "counties_west.geojson",
+      "states_west.geojson",
+      "county_stats.json",
+      "depth_display.tif"
+    ],
+    "blocking_transfer_bytes": 3358747,
+    "total_transfer_bytes": 6963956,
+    "ranged_transfer_bytes": 36770242,
+    "budget_blocking_bytes": 5000000,
+    "budget_total_bytes": 15000000,
+    "measured": "gzip transfer size, except formats already compressed",
+    "excludes": "manifest.json, which cannot record its own size, and ranged artifacts, which are not fetched whole"
+  },
+  "stages": [
+    {
+      "stage": "s01_depth",
+      "shipped": [
+        "depth_display.tif"
+      ],
+      "stats": {
+        "total_pixels": 3675315,
+        "in_domain_pixels": 2417541,
+        "discarded_nonpositive_pixels": 1097539,
+        "valid_pixels": 1320002,
+        "valid_fraction": 0.35915343310709424,
+        "valid_fraction_of_domain": 0.5460101814198808,
+        "over_display_range_pixels": 448904,
+        "below_min_depth_pixels": 4,
+        "min_m": 0.0018443441949784756,
+        "max_m": 400272.3125,
+        "mean_m": 18.182491302490234,
+        "median_m": 4.2865071296691895,
+        "percentiles_m": {
+          "1": 0.4872943162918091,
+          "5": 0.7206636071205139,
+          "25": 1.6421700716018677,
+          "50": 4.2865071296691895,
+          "75": 16.084217071533203,
+          "95": 67.96585083007812,
+          "99": 218.93698120117188
+        }
+      }
+    },
+    {
+      "stage": "s02_boundaries",
+      "shipped": [
+        "counties_west.geojson",
+        "states_west.geojson"
+      ],
+      "stats": {
+        "counties": 414,
+        "states": 11,
+        "counties_per_state": {
+          "04": 15,
+          "06": 58,
+          "08": 64,
+          "16": 44,
+          "30": 56,
+          "32": 17,
+          "35": 33,
+          "41": 36,
+          "49": 29,
+          "53": 39,
+          "56": 23
+        },
+        "bbox_4326": [
+          -124.733174,
+          31.332177,
+          -102.041524,
+          49.002494
+        ],
+        "coordinate_precision": 5
+      }
+    },
+    {
+      "stage": "s03_county_stats",
+      "shipped": [
+        "county_stats.json",
+        "counties_biomass.geojson"
+      ],
+      "stats": {
+        "counties": 414,
+        "counties_with_biomass": 173,
+        "counties_without_depth": 1,
+        "total_bdmt": 1210619951.2,
+        "total_acres": 68079943.0,
+        "bdmt_by_class": {
+          "A1": 242463360.0,
+          "A2": 136062442.4,
+          "A3": 238234988.3,
+          "A4": 224280166.8,
+          "A5": 130608686.8,
+          "A6": 238970306.9
+        },
+        "cost_usd_per_mtco2e": {
+          "A1": 17.17,
+          "A2": 19.943,
+          "A3": 25.871,
+          "A4": 25.245,
+          "A5": 29.317,
+          "A6": 38.03
+        },
+        "depth_pixels_assigned": 1320002,
+        "economics_join": "value fingerprint (name columns are unreliable)"
+      }
+    },
+    {
+      "stage": "s04_whp",
+      "shipped": [
+        "whp_display.tif"
+      ],
+      "stats": {
+        "grid": {
+          "width": 1785,
+          "height": 2059,
+          "resolution_m": 1000.0,
+          "aligned_to": "depth_lcc.tif"
+        },
+        "class_breaks": [
+          61,
+          178,
+          489,
+          1985
+        ],
+        "class_pixels": {
+          "Very Low": 958211,
+          "Low": 697587,
+          "Moderate": 597052,
+          "High": 474749,
+          "Very High": 232332
+        },
+        "coverage_fraction": 0.8054,
+        "index_range": [
+          0.0,
+          93106.42
+        ]
+      }
+    },
+    {
+      "stage": "s05_thinning",
+      "shipped": [
+        "thinning.geojson"
+      ],
+      "stats": {
+        "landscapes": 21,
+        "states": [
+          "Arizona",
+          "California",
+          "Colorado",
+          "Idaho",
+          "Montana",
+          "Nevada",
+          "New Mexico",
+          "Oregon",
+          "Utah",
+          "Washington"
+        ],
+        "acres_declared": 48160898,
+        "acres_from_geometry": 48156340,
+        "vertices_source": 289037,
+        "vertices_shipped": 12426,
+        "simplify_tolerance_deg": 0.002,
+        "area_change_pct": -0.0098,
+        "bbox_4326": [
+          -124.09812,
+          32.4414,
+          -104.68175,
+          49.00044
+        ],
+        "format": "geojson"
+      }
+    },
+    {
+      "stage": "s06_beccs",
+      "shipped": [
+        "beccs.geojson"
+      ],
+      "stats": {
+        "rows": 267,
+        "facilities": 100,
+        "scenarios": [
+          25,
+          50,
+          75,
+          90,
+          99
+        ],
+        "default_scenario": 25,
+        "rows_per_scenario": {
+          "25": 17,
+          "50": 30,
+          "75": 50,
+          "90": 74,
+          "99": 96
+        },
+        "states": [
+          "Arizona",
+          "California",
+          "Colorado",
+          "Idaho",
+          "Montana",
+          "Nevada",
+          "New Mexico",
+          "Oregon",
+          "Utah",
+          "Washington",
+          "Wyoming"
+        ],
+        "forestry_fraction": {
+          "min": 0.0003,
+          "median": 0.6499,
+          "max": 1.0
+        },
+        "min_forestry_fraction": 0.0,
+        "search_radius_mi": 250,
+        "unserved_counties": {
+          "Arizona": 0,
+          "California": 0,
+          "Colorado": 0,
+          "Idaho": 14,
+          "Montana": 13,
+          "Nevada": 3,
+          "New Mexico": 0,
+          "Oregon": 4,
+          "Utah": 13,
+          "Washington": 2,
+          "Wyoming": 0
+        },
+        "distance_crs": "EPSG:5070",
+        "grid_crs": "matches depth_lcc.tif"
+      }
+    },
+    {
+      "stage": "s07_sites",
+      "shipped": [
+        "sites.bin",
+        "sites_index.json"
+      ],
+      "stats": {
+        "sites": 871094,
+        "valid_pixels": 1320002,
+        "grid_pixels": 3675315,
+        "excluded_above_ceiling": 448904,
+        "excluded_below_floor": 4,
+        "depth_floor_m": 0.03,
+        "depth_ceiling_m": 10.0,
+        "depth_cm": {
+          "min": 3,
+          "median": 220,
+          "max": 1000
+        },
+        "crs": "EPSG:5070",
+        "encoding": "int32 delta-coded metres, raster scan order",
+        "bytes_per_site": 10
+      }
+    }
+  ]
+}

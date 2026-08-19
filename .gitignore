@@ -1,0 +1,25 @@
+node_modules/
+dist/
+.vite/
+*.tsbuildinfo
+
+# The Protomaps archive (public/data/*.pmtiles) is deliberately NOT ignored.
+#
+# It is a fetched input rather than a build product — 36.8 MB of OpenStreetMap
+# extracted from the Protomaps daily planet build — so ignoring it looked right.
+# It is also a required deploy artifact, and this repo deploys straight from a
+# git push, so ignoring it meant shipping a map with no basemap. Committing it
+# is the smaller cost: 36.8 MB is well inside GitHub's 100 MB per-file limit,
+# and it changes about as often as the OSM extract is refreshed.
+#
+# Rebuild or refresh it with `Backend/pipeline/fetch_inputs.sh protomaps`.
+
+# Playwright
+/test-results/
+/playwright-report/
+/blob-report/
+/.playwright/
+
+# Editors / OS
+.DS_Store
+*.local

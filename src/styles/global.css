@@ -1,0 +1,244 @@
+/* ==========================================================================
+   Base element defaults. Light-touch reset plus the brand defaults, so bare
+   markup already looks right. Floating-panel chrome lives in overlays.css.
+   ========================================================================== */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--surface-page);
+  color: var(--text-primary);
+  font-family: var(--font-ui);
+  font-size: 13.5px;
+  line-height: 1.45;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  overflow: hidden;
+}
+
+/* Every statistic is tabular. This, not the choice of face, is what stops digits
+   jittering as the slider or a dropdown changes (03 §5). */
+body {
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: 'tnum' 1;
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+  font-variant-numeric: inherit;
+  color: inherit;
+}
+
+button {
+  cursor: pointer;
+}
+
+a {
+  color: var(--text-link);
+  text-decoration: none;
+}
+a:hover {
+  color: var(--navy-b);
+}
+
+:focus-visible {
+  outline: none;
+  box-shadow: var(--focus-ring);
+  border-radius: var(--radius-control);
+}
+
+::selection {
+  background: var(--navy-c);
+  color: var(--charcoal-a);
+}
+
+/* Screen-reader-only, used for the soil-column live region and the map summary. */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* ---- App shell ------------------------------------------------------------ */
+
+.app-shell {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  background: var(--surface-page);
+}
+
+.map-stage {
+  position: relative;
+  flex: 1;
+  min-height: 0;
+  /* deck.gl clears to the same colour; this keeps the ground identical during
+     the first frame and while the canvas is being created. */
+  background: var(--surface-map);
+}
+
+/* The canvas is skipped in tab order (03 §15): picking is mouse-driven and the
+   lat/lng fields are the keyboard path into Mode 2. */
+.map-canvas {
+  position: absolute;
+  inset: 0;
+}
+
+/* ---- Desktop gate (03 §15) ------------------------------------------------ */
+
+.gate {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  padding: 32px;
+  background: var(--surface-page);
+}
+
+.gate-card {
+  max-width: 380px;
+  padding: 28px 26px;
+  background: var(--surface-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-card);
+  text-align: center;
+}
+
+.gate-card .eyebrow {
+  margin-bottom: 10px;
+}
+
+.gate-card p {
+  margin: 0;
+  font-family: var(--font-serif);
+  font-size: 15px;
+  line-height: 1.55;
+  color: var(--text-secondary);
+}
+
+/* ---- Shared primitives --------------------------------------------------- */
+
+.eyebrow {
+  font-family: var(--font-ui);
+  font-size: 12px;
+  font-weight: var(--weight-medium);
+  letter-spacing: var(--tracking-eyebrow);
+  text-transform: uppercase;
+  color: var(--text-secondary);
+}
+
+.field-label {
+  display: block;
+  font-size: 12px;
+  letter-spacing: var(--tracking-label);
+  text-transform: uppercase;
+  color: var(--text-secondary);
+  margin-bottom: 5px;
+}
+
+.caption {
+  font-size: 11.5px;
+  line-height: 1.4;
+  color: var(--text-secondary);
+}
+
+.rule {
+  height: 1px;
+  background: var(--border-subtle);
+  border: 0;
+  margin: 16px 0;
+}
+
+select,
+input[type='text'] {
+  width: 100%;
+  height: 34px;
+  padding: 0 8px;
+  font-size: 13.5px;
+  background: var(--surface-card);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-control);
+  color: var(--text-primary);
+}
+
+select:disabled,
+input:disabled {
+  background: var(--charcoal-e);
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+input[type='checkbox'] {
+  accent-color: var(--action-primary);
+  width: 14px;
+  height: 14px;
+  margin: 0;
+}
+
+.btn-primary {
+  width: 100%;
+  height: 38px;
+  border: none;
+  background: var(--action-primary);
+  color: var(--text-inverse);
+  border-radius: var(--radius-control);
+  font-size: 14px;
+  font-weight: var(--weight-medium);
+}
+.btn-primary:hover {
+  background: var(--action-primary-hover);
+}
+.btn-primary:active {
+  transform: translateY(0.5px);
+}
+.btn-primary:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.btn-secondary {
+  width: 100%;
+  height: 34px;
+  background: var(--surface-card);
+  border: 1px solid var(--action-primary);
+  color: var(--navy-a);
+  border-radius: var(--radius-control);
+  font-size: 13px;
+}
+.btn-secondary:hover {
+  background: var(--navy-e);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

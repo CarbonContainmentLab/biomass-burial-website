@@ -1,0 +1,282 @@
+{
+ "meta": {
+  "stage": "s03_county_stats",
+  "counties": 414,
+  "counties_with_biomass": 173,
+  "depth_scope": "whole county",
+  "depth_source": "depth_lcc.tif",
+  "units": {
+   "depth": "m",
+   "acres": "acres",
+   "bdmt": "bone-dry metric tonnes",
+   "bdmt_per_year": "bone-dry metric tonnes per year",
+   "cost_usd_per_mtco2e": "USD per tonne CO2e",
+   "burial_path_length_km": "km"
+  },
+  "notes": {
+   "cost_usd_per_mtco2e": "Forestry treatment cost only (the model's ni_f, sign flipped). It varies by accessibility class but not by county, so it is repeated per county for convenience and also listed once under accessibility_classes.",
+   "net_income_burial_usd_per_mtco2e": "Net income for the burial pathway, which does vary by county because it includes haulage. Positive is revenue.",
+   "has_biomass": "False means the county was not part of the residue model, not that it holds no biomass.",
+   "depth": "Null where no 1 km pixel centre falls inside the county."
+  },
+  "accessibility_classes": [
+   {
+    "id": "A1",
+    "road_idx": 0,
+    "slope_idx": 0,
+    "road_ft": [
+     0,
+     500
+    ],
+    "road_m": [
+     0.0,
+     152.4
+    ],
+    "slope_pct": [
+     0,
+     20
+    ],
+    "label": "0-500 ft from road, <20% slope",
+    "cost_usd_per_mtco2e": 17.17
+   },
+   {
+    "id": "A2",
+    "road_idx": 1,
+    "slope_idx": 0,
+    "road_ft": [
+     500,
+     1000
+    ],
+    "road_m": [
+     152.4,
+     304.8
+    ],
+    "slope_pct": [
+     0,
+     20
+    ],
+    "label": "500-1,000 ft from road, <20% slope",
+    "cost_usd_per_mtco2e": 19.943
+   },
+   {
+    "id": "A3",
+    "road_idx": 2,
+    "slope_idx": 0,
+    "road_ft": [
+     1000,
+     2640
+    ],
+    "road_m": [
+     304.8,
+     804.7
+    ],
+    "slope_pct": [
+     0,
+     20
+    ],
+    "label": "1,000 ft - 0.5 mi from road, <20% slope",
+    "cost_usd_per_mtco2e": 25.871
+   },
+   {
+    "id": "A4",
+    "road_idx": 0,
+    "slope_idx": 1,
+    "road_ft": [
+     0,
+     500
+    ],
+    "road_m": [
+     0.0,
+     152.4
+    ],
+    "slope_pct": [
+     20,
+     40
+    ],
+    "label": "0-500 ft from road, 20-40% slope",
+    "cost_usd_per_mtco2e": 25.245
+   },
+   {
+    "id": "A5",
+    "road_idx": 1,
+    "slope_idx": 1,
+    "road_ft": [
+     500,
+     1000
+    ],
+    "road_m": [
+     152.4,
+     304.8
+    ],
+    "slope_pct": [
+     20,
+     40
+    ],
+    "label": "500-1,000 ft from road, 20-40% slope",
+    "cost_usd_per_mtco2e": 29.317
+   },
+   {
+    "id": "A6",
+    "road_idx": 2,
+    "slope_idx": 1,
+    "road_ft": [
+     1000,
+     2640
+    ],
+    "road_m": [
+     304.8,
+     804.7
+    ],
+    "slope_pct": [
+     20,
+     40
+    ],
+    "label": "1,000 ft - 0.5 mi from road, 20-40% slope",
+    "cost_usd_per_mtco2e": 38.03
+   }
+  ]
+ },
+ "counties": {
+  "04001": {
+   "name": "Apache",
+   "state": "04",
+   "has_biomass": true,
+   "depth": {
+    "min": 0.32,
+    "mean": 5.662,
+    "median": 3.561,
+    "n_pixels": 17215
+   },
+   "biomass": {
+    "total_acres": 1311994.2,
+    "total_bdmt": 10569922.3,
+    "burial_path_length_km": 164.6,
+    "burial_carbon_efficiency": 0.7839,
+    "wildfire_hazard_potential": 0.657,
+    "classes": {
+     "A1": {
+      "acres": 328290.3,
+      "bdmt": 2644830.8,
+      "bdmt_per_year": 264483.1,
+      "cost_usd_per_mtco2e": 17.17,
+      "net_income_burial_usd_per_mtco2e": 26.932
+     },
+     "A2": {
+      "acres": 159496.5,
+      "bdmt": 1284964.0,
+      "bdmt_per_year": 128496.4,
+      "cost_usd_per_mtco2e": 19.943,
+      "net_income_burial_usd_per_mtco2e": 24.159
+     },
+     "A3": {
+      "acres": 510276.3,
+      "bdmt": 4110979.3,
+      "bdmt_per_year": 411097.9,
+      "cost_usd_per_mtco2e": 25.871,
+      "net_income_burial_usd_per_mtco2e": 18.231
+     },
+     "A4": {
+      "acres": 103260.5,
+      "bdmt": 831906.1,
+      "bdmt_per_year": 83190.6,
+      "cost_usd_per_mtco2e": 25.245,
+      "net_income_burial_usd_per_mtco2e": 18.857
+     },
+     "A5": {
+      "acres": 50168.1,
+      "bdmt": 404173.1,
+      "bdmt_per_year": 40417.3,
+      "cost_usd_per_mtco2e": 29.317,
+      "net_income_burial_usd_per_mtco2e": 14.785
+     },
+     "A6": {
+      "acres": 160502.5,
+      "bdmt": 1293069.0,
+      "bdmt_per_year": 129306.9,
+      "cost_usd_per_mtco2e": 38.03,
+      "net_income_burial_usd_per_mtco2e": 6.072
+     }
+    }
+   }
+  },
+  "04012": {
+   "name": "La Paz",
+   "state": "04",
+   "has_biomass": false,
+   "depth": {
+    "min": 0.061,
+    "mean": 1.665,
+    "median": 1.473,
+    "n_pixels": 7995
+   }
+  },
+  "53055": {
+   "name": "San Juan",
+   "state": "53",
+   "has_biomass": false,
+   "depth": null
+  },
+  "06007": {
+   "name": "Butte",
+   "state": "06",
+   "has_biomass": true,
+   "depth": {
+    "min": 4.675,
+    "mean": 54.335,
+    "median": 56.833,
+    "n_pixels": 45
+   },
+   "biomass": {
+    "total_acres": 363751.6,
+    "total_bdmt": 12461563.3,
+    "burial_path_length_km": 206.44,
+    "burial_carbon_efficiency": 0.782,
+    "wildfire_hazard_potential": 0.994,
+    "classes": {
+     "A1": {
+      "acres": 46096.1,
+      "bdmt": 1579179.9,
+      "bdmt_per_year": 157918.0,
+      "cost_usd_per_mtco2e": 17.17,
+      "net_income_burial_usd_per_mtco2e": 22.509
+     },
+     "A2": {
+      "acres": 30189.8,
+      "bdmt": 1034258.4,
+      "bdmt_per_year": 103425.8,
+      "cost_usd_per_mtco2e": 19.943,
+      "net_income_burial_usd_per_mtco2e": 19.736
+     },
+     "A3": {
+      "acres": 87793.3,
+      "bdmt": 3007661.5,
+      "bdmt_per_year": 300766.2,
+      "cost_usd_per_mtco2e": 25.871,
+      "net_income_burial_usd_per_mtco2e": 13.808
+     },
+     "A4": {
+      "acres": 56095.5,
+      "bdmt": 1921745.3,
+      "bdmt_per_year": 192174.5,
+      "cost_usd_per_mtco2e": 25.245,
+      "net_income_burial_usd_per_mtco2e": 14.434
+     },
+     "A5": {
+      "acres": 36738.9,
+      "bdmt": 1258616.2,
+      "bdmt_per_year": 125861.6,
+      "cost_usd_per_mtco2e": 29.317,
+      "net_income_burial_usd_per_mtco2e": 10.362
+     },
+     "A6": {
+      "acres": 106838.0,
+      "bdmt": 3660102.0,
+      "bdmt_per_year": 366010.2,
+      "cost_usd_per_mtco2e": 38.03,
+      "net_income_burial_usd_per_mtco2e": 1.649
+     }
+    }
+   }
+  }
+ }
+}

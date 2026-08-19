@@ -1,0 +1,142 @@
+/* ==========================================================================
+   Burial siting tool — design tokens
+
+   Ported from the Carbon Containment Lab design system
+   (Website mockup requirements (1)/_ds/…/tokens/) per 03_FRONTEND_ARCHITECTURE
+   §5. Components reach for the semantic names below the palette, never the raw
+   hues. The palette is here so the mapping is auditable against the brand PDF.
+   ========================================================================== */
+
+:root {
+  /* ---- Base ---- */
+  --white: #ffffff;
+  --error: #e52900;
+
+  /* ---- Navy (primary brand blue; Navy B is the logo blue) ---- */
+  --navy-a: #004d85;
+  --navy-b: #467ed1;
+  --navy-c: #82a9e3;
+  --navy-d: #bdc9db;
+  --navy-e: #eaecf1;
+
+  /* ---- Charcoal (neutral / ink) ---- */
+  --charcoal-a: #2e2822;
+  --charcoal-b: #7a7a71;
+  --charcoal-c: #cbcbbd;
+  --charcoal-d: #e1e1db;
+  --charcoal-e: #f6f5f4;
+
+  /* ---- Pine (BECCS, thinning, feasible) ---- */
+  --pine-a: #0f754d;
+  --pine-b: #18b677;
+  --pine-c: #79cdb2;
+  --pine-d: #b2d6ca;
+  --pine-e: #e0ebe7;
+
+  /* ---- Gold (biomass ramp) ---- */
+  --gold-a: #6a4d15;
+  --gold-b: #bd8100;
+  --gold-c: #f3c262;
+  --gold-d: #e9d1b1;
+  --gold-e: #f7efe9;
+
+  /* ---- Ochre (wildfire hazard classes) ---- */
+  --ochre-a: #90583c;
+  --ochre-b: #c16a3e;
+  --ochre-c: #da8d67;
+  --ochre-d: #e8c5b0;
+  --ochre-e: #f0e3db;
+
+  /* ======================================================================
+     Semantic aliases
+     ====================================================================== */
+  --text-primary: var(--charcoal-a);
+  --text-secondary: var(--charcoal-b);
+  --text-link: var(--navy-a);
+  --text-inverse: var(--white);
+
+  --surface-page: var(--charcoal-e);
+  --surface-card: var(--white);
+  --surface-tint: var(--navy-e);
+  /* The flat ground under every layer. deck.gl clears to this. */
+  --surface-map: #edede8;
+
+  --border-subtle: var(--charcoal-d);
+  --border-default: var(--charcoal-c);
+
+  --action-primary: var(--navy-b);
+  --action-primary-hover: var(--navy-a);
+
+  --focus-ring: 0 0 0 3px rgba(70, 126, 209, 0.35);
+  --shadow-card: 0 4px 12px rgba(46, 40, 34, 0.08);
+  --shadow-panel: 0 12px 32px rgba(46, 40, 34, 0.1);
+
+  /* ======================================================================
+     Type
+
+     The two-family structure the design system depends on: --font-ui carries
+     UI, headings and every numeral; --font-serif carries the empty-state
+     sentences and nothing else.
+
+     --font-ui is Archivo, self-hosted under the SIL Open Font License — see
+     src/styles/fonts.css. The stack behind it is the old web-safe fallback,
+     kept so a failed font fetch degrades to Helvetica rather than to Times.
+
+     --font-serif is a Georgia-first system stack. Archivo has no serif
+     companion, and collapsing both roles onto one family would flatten the
+     UI/prose contrast the empty states rely on.
+
+     Both are settled, not provisional. The design system was drawn in the
+     lab's licensed display faces, and this closes `03 §22` item 2 by not
+     using them: a public repository cannot redistribute a commercially
+     licensed font, and a web licence would have bought a small refinement in
+     exchange for a permanent obligation on every future contributor. Openly
+     licensed faces are the right call for a tool meant to be forked.
+
+     Numerals do not depend on the face: `font-variant-numeric: tabular-nums`
+     on every statistic is what stops digits jittering (03 §5).
+     ====================================================================== */
+  --font-ui: 'Archivo', 'Helvetica Neue', Helvetica, 'Segoe UI', Arial, system-ui, sans-serif;
+  --font-serif: Georgia, 'Times New Roman', 'Iowan Old Style', serif;
+
+  --weight-regular: 400;
+  --weight-medium: 500;
+  --weight-bold: 700;
+
+  --tracking-eyebrow: 0.14em;
+  --tracking-label: 0.08em;
+
+  /* ======================================================================
+     Layout — 03 §4 "Layout numbers (from the mockup)"
+     ====================================================================== */
+  --header-h: 56px;
+  --rail-w: 288px;
+  --query-w: 364px;
+  --overlay-inset: 16px;
+  --overlay-gap: 12px;
+  --radius-card: 8px;
+  --radius-control: 4px;
+
+  --collapse-duration: 220ms;
+  --ease-standard: cubic-bezier(0.4, 0, 0.2, 1);
+  --left-collapsed-x: -330px;
+  --right-collapsed-x: 410px;
+
+  /* ---- Z-order (03 §4) ---- */
+  --z-map: 0;
+  --z-status: 900;
+  --z-rail: 1000;
+  --z-edge: 1001;
+  --z-header: 1200;
+}
+
+/* The depth ramp lives in one place per medium: these stops mirror
+   src/map/depthRamp.ts exactly (03 §5 "Same stops in the fragment shader and in
+   SoilColumn"). Metres of required cover, 0 → 10. */
+:root {
+  --depth-0: rgb(242, 245, 250);
+  --depth-25: rgb(189, 201, 219);
+  --depth-50: rgb(130, 169, 227);
+  --depth-75: rgb(70, 126, 209);
+  --depth-100: rgb(0, 77, 133);
+}

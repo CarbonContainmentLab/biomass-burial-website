@@ -1,0 +1,649 @@
+/* ==========================================================================
+   Floating chrome over the map: header, left rail, query panel, edge toggles,
+   status cards. Numbers are 03 §4 "Layout numbers (from the mockup)".
+
+   The map is never inset. Panels float above it, and collapsing one translates
+   it off-screen rather than resizing the stage, so the WebGL canvas is never
+   asked to reflow.
+   ========================================================================== */
+
+/* ---- Header --------------------------------------------------------------- */
+
+.header {
+  flex: none;
+  height: var(--header-h);
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  padding: 0 20px;
+  background: var(--surface-card);
+  border-bottom: 1px solid var(--border-subtle);
+  z-index: var(--z-header);
+}
+
+/* Centre, not baseline: the logo is an image, and an image's baseline is its
+   bottom edge, which would hang it above the title's. */
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.brand-home {
+  display: flex;
+  align-items: center;
+  border-radius: var(--radius-control);
+}
+
+/* Sized by height so the artwork keeps its ratio whatever the file is replaced
+   with. The stacked mark is 844 × 382, so 46px tall is ~102px wide. That leaves
+   5px of air above and below inside the 56px header — near the ceiling, because
+   a stacked lockup needs the height to stay legible. Going bigger means raising
+   `--header-h`, which is a mockup number (03 §4). */
+.brand-logo {
+  display: block;
+  height: 46px;
+  width: auto;
+}
+
+.brand-divider {
+  width: 1px;
+  height: 14px;
+  background: var(--border-default);
+  display: inline-block;
+}
+
+.brand-title {
+  font-size: 15px;
+  font-weight: var(--weight-medium);
+  color: var(--text-primary);
+}
+
+/* Inside the h1 so it stays part of the page's one heading, but stepped back:
+   smaller, secondary ink, regular weight. The version is a fact about the tool,
+   not part of its name. */
+.brand-version {
+  font-size: 12px;
+  font-weight: var(--weight-regular);
+  color: var(--text-secondary);
+  font-variant-numeric: tabular-nums;
+}
+
+/* ---- Rails ---------------------------------------------------------------- */
+
+.rail-left,
+.rail-right {
+  position: absolute;
+  top: var(--overlay-inset);
+  bottom: var(--overlay-inset);
+  z-index: var(--z-rail);
+  transition:
+    transform var(--collapse-duration) var(--ease-standard),
+    opacity 180ms var(--ease-standard);
+}
+
+.rail-left {
+  left: var(--overlay-inset);
+  width: var(--rail-w);
+  display: flex;
+  flex-direction: column;
+  gap: var(--overlay-gap);
+  overflow: auto;
+  padding-right: 2px;
+}
+
+.rail-right {
+  right: var(--overlay-inset);
+  width: var(--query-w);
+  display: flex;
+  flex-direction: column;
+  background: var(--surface-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-panel);
+  overflow: hidden;
+}
+
+.rail-left[data-open='false'] {
+  transform: translateX(var(--left-collapsed-x));
+  opacity: 0;
+  pointer-events: none;
+}
+
+.rail-right[data-open='false'] {
+  transform: translateX(var(--right-collapsed-x));
+  opacity: 0;
+  pointer-events: none;
+}
+
+.edge-toggle {
+  position: absolute;
+  top: var(--overlay-inset);
+  z-index: var(--z-edge);
+  width: 28px;
+  height: 34px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--surface-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-control);
+  box-shadow: var(--shadow-card);
+  color: var(--navy-a);
+  font-size: 15px;
+  line-height: 1;
+  padding: 0;
+}
+.edge-toggle:hover {
+  background: var(--navy-e);
+}
+.edge-toggle[data-side='left'] {
+  left: var(--overlay-inset);
+}
+.edge-toggle[data-side='right'] {
+  right: var(--overlay-inset);
+}
+
+.collapse-btn {
+  flex: none;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-control);
+  color: var(--navy-a);
+  font-size: 14px;
+  line-height: 1;
+  padding: 0;
+}
+.collapse-btn:hover {
+  background: var(--navy-e);
+}
+
+/* ---- Cards --------------------------------------------------------------- */
+
+.card {
+  background: var(--surface-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-card);
+}
+
+.card-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 10px 10px 6px 14px;
+}
+
+.card-body {
+  padding: 12px 14px 14px;
+}
+
+/* Optional 3px hue accent bar on top, per the design system's card rule. */
+.card[data-accent='navy'] {
+  border-top: 3px solid var(--navy-b);
+}
+.card[data-accent='pine'] {
+  border-top: 3px solid var(--pine-a);
+}
+.card[data-accent='gold'] {
+  border-top: 3px solid var(--gold-b);
+}
+.card[data-accent='error'] {
+  border-top: 3px solid var(--error);
+}
+
+/* ---- Layer rows ---------------------------------------------------------- */
+
+.layer-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 7px 14px;
+  font-size: 13.5px;
+  cursor: pointer;
+}
+.layer-row:hover {
+  background: var(--charcoal-e);
+}
+.layer-row[data-disabled='true'] {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+.layer-row:last-of-type {
+  padding-bottom: 12px;
+}
+
+.layer-swatch {
+  width: 26px;
+  height: 11px;
+  border-radius: 2px;
+  border: 1px solid var(--border-default);
+  flex: none;
+}
+
+.layer-swatch[data-kind='depth'] {
+  background: linear-gradient(90deg, var(--depth-0), var(--depth-50), var(--depth-100));
+}
+.layer-swatch[data-kind='biomass'] {
+  background: linear-gradient(90deg, var(--gold-e), var(--gold-c), var(--gold-a));
+}
+.layer-swatch[data-kind='whp'] {
+  background: linear-gradient(90deg, var(--ochre-e), var(--ochre-c), var(--ochre-a));
+}
+.layer-swatch[data-kind='thinning'] {
+  background: rgba(24, 182, 119, 0.28);
+  border: 1.5px dashed var(--pine-a);
+}
+.layer-swatch[data-kind='beccs'] {
+  width: 26px;
+  height: 11px;
+  border: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: none;
+}
+.layer-diamond {
+  width: 9px;
+  height: 9px;
+  background: var(--pine-a);
+  transform: rotate(45deg);
+  display: block;
+}
+
+.layer-subcontrol {
+  padding: 0 14px 10px 50px;
+}
+.layer-subcontrol select {
+  height: 28px;
+  font-size: 12.5px;
+}
+
+.layer-note {
+  padding: 0 14px 10px 50px;
+}
+
+/* WHP legend: five labelled swatches, never a continuous bar (03 §10). */
+.whp-legend {
+  display: grid;
+  grid-template-columns: 14px 1fr;
+  gap: 4px 8px;
+  align-items: center;
+  padding: 2px 14px 10px 50px;
+  font-size: 11.5px;
+  color: var(--text-secondary);
+}
+.whp-legend i {
+  width: 14px;
+  height: 10px;
+  border-radius: 2px;
+  border: 1px solid var(--border-default);
+  display: block;
+}
+
+/* ---- Query panel --------------------------------------------------------- */
+
+.query-tabs {
+  flex: none;
+  display: flex;
+  align-items: center;
+  padding: 6px 6px 0;
+  gap: 4px;
+  background: var(--charcoal-e);
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.query-tab {
+  flex: 1;
+  height: 38px;
+  border: none;
+  border-bottom: 2px solid transparent;
+  background: transparent;
+  color: var(--text-secondary);
+  font-size: 13.5px;
+}
+.query-tab[aria-selected='true'] {
+  border-bottom-color: var(--action-primary);
+  color: var(--navy-a);
+  font-weight: var(--weight-medium);
+}
+
+.query-tabs .collapse-btn {
+  margin-bottom: 6px;
+}
+
+.query-body {
+  flex: 1;
+  min-height: 0;
+  overflow: auto;
+  padding: 16px;
+}
+
+.query-intro {
+  margin: 0 0 14px;
+  font-size: 13.5px;
+  line-height: 1.55;
+  color: var(--text-secondary);
+}
+
+/* ---- Results ------------------------------------------------------------- */
+
+.stat-tiles {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.stat-tile {
+  flex: 1;
+  background: var(--surface-tint);
+  border-radius: var(--radius-card);
+  padding: 11px 12px;
+}
+
+.stat-tile-label {
+  font-size: 11px;
+  color: var(--text-secondary);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.stat-tile-value {
+  font-size: 26px;
+  font-weight: var(--weight-medium);
+  color: var(--navy-a);
+  line-height: 1.05;
+  margin-top: 3px;
+}
+
+.stat-tile-unit {
+  font-size: 13px;
+  color: var(--text-secondary);
+}
+
+.defs {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 8px 10px;
+  font-size: 13px;
+  margin: 0;
+}
+.defs dt {
+  color: var(--text-secondary);
+}
+.defs dd {
+  margin: 0;
+  text-align: right;
+  font-weight: var(--weight-medium);
+}
+.defs dd[data-weight='regular'] {
+  font-weight: var(--weight-regular);
+}
+
+.defs-boxed {
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-card);
+  padding: 12px 13px;
+}
+
+.result-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 9px;
+}
+
+.result-title {
+  font-size: 14px;
+  font-weight: var(--weight-medium);
+}
+
+.result-pill {
+  font-size: 11px;
+  letter-spacing: var(--tracking-label);
+  text-transform: uppercase;
+  color: var(--pine-a);
+}
+.result-pill[data-tone='muted'] {
+  color: var(--text-secondary);
+}
+
+/* Empty states are the one place the serif stack appears. */
+.empty-state {
+  border: 1px dashed var(--border-default);
+  border-radius: var(--radius-card);
+  padding: 18px 14px;
+  text-align: center;
+  font-size: 13px;
+  line-height: 1.55;
+  color: var(--text-secondary);
+  font-family: var(--font-serif);
+}
+
+/* ---- Soil column --------------------------------------------------------- */
+
+/* Horizontal, 0 m at the left. 03 §5 draws this as a 220 px vertical column;
+   see 04_BUILD_PLAN §5.5 for why it turned. */
+
+.soil-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 8px;
+  /* Room for the handle, which straddles the bar's top edge. */
+  margin-bottom: 12px;
+}
+
+.soil-strip {
+  position: relative;
+  height: 36px;
+  border: 1px solid var(--border-default);
+  border-radius: 2px;
+  /* Shallow at the left: 0 m at the origin, 10 m at the far end. */
+  background: linear-gradient(
+    90deg,
+    var(--depth-0) 0%,
+    var(--depth-25) 25%,
+    var(--depth-50) 50%,
+    var(--depth-75) 75%,
+    var(--depth-100) 100%
+  );
+  cursor: ew-resize;
+  touch-action: none;
+}
+
+/* The band deeper than the threshold is dimmed, not recoloured. */
+.soil-excluded {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  background: var(--charcoal-e);
+  opacity: 0.65;
+  pointer-events: none;
+}
+
+.soil-cut {
+  position: absolute;
+  top: -1px;
+  bottom: -1px;
+  width: 2px;
+  background: var(--navy-a);
+  pointer-events: none;
+}
+
+/* 10px is the border-box, so half of it is 5: -5 straddles the top edge and
+   translateX(-5px) centres the handle on the cut. */
+.soil-handle {
+  position: absolute;
+  top: -5px;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--white);
+  border: 2px solid var(--navy-a);
+  transform: translateX(-5px);
+  pointer-events: none;
+}
+
+.soil-readout {
+  font-size: 15px;
+  font-weight: var(--weight-medium);
+  color: var(--navy-a);
+  font-variant-numeric: tabular-nums;
+}
+
+.soil-ticks {
+  position: relative;
+  height: 13px;
+  margin-top: 6px;
+  font-size: 11px;
+  color: var(--text-secondary);
+}
+.soil-ticks span {
+  position: absolute;
+  top: 0;
+  transform: translateX(-50%);
+  white-space: nowrap;
+}
+.soil-ticks span[data-edge='start'] {
+  transform: none;
+}
+.soil-ticks span[data-edge='end'] {
+  transform: translateX(-100%);
+}
+
+/* ---- Status cards -------------------------------------------------------- */
+
+.status-card {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  z-index: var(--z-status);
+  max-width: 320px;
+  background: var(--surface-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-card);
+  padding: 14px 18px;
+  text-align: center;
+  font-size: 13px;
+  color: var(--text-secondary);
+}
+
+.status-card strong {
+  display: block;
+  font-size: 13.5px;
+  font-weight: var(--weight-medium);
+  color: var(--text-primary);
+  margin-bottom: 4px;
+}
+
+.status-card button {
+  height: 32px;
+  padding: 0 16px;
+  margin-top: 10px;
+  border: none;
+  background: var(--action-primary);
+  color: var(--text-inverse);
+  border-radius: var(--radius-control);
+  font-size: 13px;
+}
+.status-card button:hover {
+  background: var(--action-primary-hover);
+}
+
+/* ---- Map tooltip --------------------------------------------------------- */
+
+.map-tooltip {
+  font-family: var(--font-ui);
+  font-size: 12px;
+  line-height: 1.45;
+  background: var(--surface-card);
+  color: var(--text-primary);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-control);
+  box-shadow: var(--shadow-card);
+  padding: 8px 10px;
+  max-width: 240px;
+}
+.map-tooltip .eyebrow {
+  display: block;
+  margin-bottom: 4px;
+}
+.map-tooltip dl {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 3px 10px;
+  margin: 0;
+}
+.map-tooltip dt {
+  color: var(--text-secondary);
+}
+.map-tooltip dd {
+  margin: 0;
+  text-align: right;
+}
+
+/* ---- Slope segmented control --------------------------------------------- */
+
+.segmented {
+  display: flex;
+  gap: 8px;
+}
+
+.segmented button {
+  flex: 1;
+  height: 34px;
+  border-radius: var(--radius-control);
+  font-size: 13px;
+  border: 1px solid var(--border-default);
+  background: var(--surface-card);
+  color: var(--text-primary);
+}
+.segmented button[aria-pressed='true'] {
+  border-color: var(--action-primary);
+  background: var(--action-primary);
+  color: var(--text-inverse);
+}
+
+.pick-button {
+  width: 100%;
+  height: 32px;
+  border-radius: var(--radius-control);
+  font-size: 12.5px;
+  border: 1px dashed var(--border-default);
+  background: var(--surface-card);
+  color: var(--text-secondary);
+}
+.pick-button[aria-pressed='true'] {
+  border-style: solid;
+  border-color: var(--action-primary);
+  background: var(--navy-e);
+  color: var(--navy-a);
+}
+
+.checkbox-row {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  font-size: 13.5px;
+  cursor: pointer;
+}
+
+.latlng-row {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+.latlng-row > div {
+  flex: 1;
+  min-width: 0;
+}
