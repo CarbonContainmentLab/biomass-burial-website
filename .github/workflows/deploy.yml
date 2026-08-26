@@ -47,14 +47,19 @@ jobs:
       - run: npm run typecheck
       - run: npm test
 
-      # Served at the domain root, so base is `/`. If this ever moves to a
-      # project page (user.github.io/repo-name/), this is the one line that
-      # changes: BASE_URL=/repo-name/. Every asset path in src/data/paths.ts
-      # already goes through it.
+      # TEMPORARY: serving from the project page while the DNS record for
+      # burial.carboncontainmentlab.org is pending, so the base href has to be
+      # the repository path rather than the domain root. Vite writes it into
+      # every asset URL at build time, which is why removing public/CNAME on
+      # its own left the page loading /assets/... and 404ing -- the two are one
+      # decision, not two.
+      #
+      # TO GO BACK TO THE CUSTOM DOMAIN: set BASE_URL to `/` and restore
+      # public/CNAME containing burial.carboncontainmentlab.org. Both, together.
       - name: Build
         run: npm run build
         env:
-          BASE_URL: /
+          BASE_URL: /biomass-burial-website/
 
       - run: npm run budget
 
