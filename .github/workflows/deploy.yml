@@ -1,0 +1,78 @@
+# Publishes the built site to GitHub Pages on every push to main.
+#
+# For a repository whose root IS the Vite project (package.json at the top
+# level). If the frontend lives in a subdirectory, add `working-directory` to
+# the defaults block and prefix the two paths that name dist/.
+#
+# The Protomaps archive needs no special handling here. It is committed, so
+# `actions/checkout` brings it along and `vite build` copies it out of public/
+# like any other asset. If it is ever moved back out of git, this job is where
+# the fetch step belongs -- before the build, not after.
+name: Deploy
+
+on:
+  push:
+    branches: [main]
+  # So a deploy can be re-run without an empty commit.
+  workflow_dispatch:
+
+# Pages needs these; the token is read-only by default.
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Never let two deploys race. `cancel-in-progress: false` because a
+# half-applied deploy is worse than a slightly stale one.
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - run: npm ci
+
+      # The same gates as CI. A push to main that cannot pass them should not
+      # reach the public URL, whatever the PR said.
+      - run: npm run typecheck
+      - run: npm test
+
+      # Served at the domain root, so base is `/`. If this ever moves to a
+      # project page (user.github.io/repo-name/), this is the one line that
+      # changes: BASE_URL=/repo-name/. Every asset path in src/data/paths.ts
+      # already goes through it.
+      - name: Build
+        run: npm run build
+        env:
+          BASE_URL: /
+
+      - run: npm run budget
+
+      # No CNAME step. Put the CNAME file in public/ instead: Vite copies
+      # public/ into dist/ verbatim, so the custom domain travels with every
+      # build. That also closes a real failure mode -- GitHub Pages drops the
+      # domain setting if a deploy arrives without the file.
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist
+
+  deploy:
+    name: Deploy
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

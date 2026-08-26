@@ -109,7 +109,7 @@ if (total > TARGET_TRANSFER) {
 if (ranged > 0) {
   console.log(`ranged, not counted ${mb(ranged)}  the Protomaps archive — served by HTTP Range,`);
   console.log(`                   so a session reads the tiles it looks at, not the file.`);
-  console.log(`                   Still a required deploy artifact: see Frontend/.gitignore.`);
+  console.log(`                   Still a required deploy artifact: see .gitignore.`);
 }
 
 if (failures.length > 0) {

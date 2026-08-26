@@ -1,12 +1,17 @@
 # Biomass burial siting tool — frontend
 
 A static single-page app: `index.html` plus hashed assets. No application server,
-no database, no API keys. Everything under `public/data/` is produced by
-`../Backend/pipeline` and committed; the app never talks to a service.
+no database, no API keys. Everything under `public/data/` is committed here and
+served as a static file; the app never talks to a service.
 
-Canonical design: [`../03_FRONTEND_ARCHITECTURE.md`](../03_FRONTEND_ARCHITECTURE.md).
-Build order, corrections to that document, and the performance notes:
-[`../04_BUILD_PLAN.md`](../04_BUILD_PLAN.md).
+The data is produced by a separate Python pipeline that lives in the project
+monorepo, not in this repository. That means the files under `public/data/` can
+be served and verified here but not regenerated here — `manifest.json` records
+the SHA-256 of every input they were derived from, and the pipeline is what
+checks them against it.
+
+Canonical design: [`docs/03_FRONTEND_ARCHITECTURE.md`](docs/03_FRONTEND_ARCHITECTURE.md).
+Licensing of the data, basemap and fonts: [`ATTRIBUTIONS.md`](ATTRIBUTIONS.md).
 
 ## Running it
 

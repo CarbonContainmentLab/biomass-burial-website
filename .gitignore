@@ -12,7 +12,8 @@ dist/
 # is the smaller cost: 36.8 MB is well inside GitHub's 100 MB per-file limit,
 # and it changes about as often as the OSM extract is refreshed.
 #
-# Rebuild or refresh it with `Backend/pipeline/fetch_inputs.sh protomaps`.
+# Rebuild or refresh it with `fetch_inputs.sh protomaps` in the monorepo's
+# Backend/pipeline; it is not regenerable from this repository alone.
 
 # Playwright
 /test-results/
