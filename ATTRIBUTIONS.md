@@ -1,9 +1,12 @@
 # Attributions
 
-The source code in this repository is MIT licensed — see [LICENSE](LICENSE).
-The data, basemap and fonts it ships are **not** the Carbon Containment Lab's
-to relicense, and several carry obligations that outlive this repository. Those
-are set out here.
+A licence for the source code has not been settled yet, so none is declared —
+which by default means all rights reserved, and nobody may reuse it.
+
+That is a separate question from this file. The data, basemap and fonts this
+repository ships are not the Carbon Containment Lab’s to relicense, and several
+carry obligations that hold regardless of what the code is eventually licensed
+as. Those are set out here.
 
 Every dataset below is also recorded in `public/data/manifest.json`
 with a SHA-256 of the exact input file, so a citation here can always be traced
