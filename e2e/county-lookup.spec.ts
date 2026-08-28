@@ -44,7 +44,7 @@ test('county statistics for Apache County, class A1', async ({ page }) => {
   await expect(results.getByText('A1 · 0–500 ft from road, <20% slope')).toBeVisible();
 });
 
-test('a county outside the residue model is offered but not selectable', async ({ page }) => {
+test('a county that is not a priority treatment area is offered but not selectable', async ({ page }) => {
   await page.goto('/');
   await expect(page.getByText('Loading map layers…')).toBeHidden({ timeout: 30_000 });
 
@@ -54,7 +54,7 @@ test('a county outside the residue model is offered but not selectable', async (
   const laPaz = page.locator('#county-county option[value="04012"]');
   await expect(laPaz).toHaveCount(1);
   await expect(laPaz).toBeDisabled();
-  await expect(laPaz).toHaveAttribute('title', 'Not in the residue model');
+  await expect(laPaz).toHaveAttribute('title', 'Not selected as highest priority treatment area');
 });
 
 test('the shareable URL carries the county query', async ({ page }) => {

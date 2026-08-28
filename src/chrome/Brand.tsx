@@ -1,7 +1,7 @@
 import { assetUrl } from '../data/paths';
 import { COPY } from '../lib/copy';
 
-/** The lab's site. The logo is the only thing on this page that leaves it. */
+/** The lab's site. One of two outbound links, with the paper in `Header`. */
 const LAB_HOME = 'https://carboncontainmentlab.org/';
 
 /**

@@ -18,6 +18,7 @@ export const COPY = {
   brandTitle: 'Biomass Burial Siting Tool',
   /* Rendered smaller and in secondary ink beside the title, not as part of it. */
   brandVersion: 'v1.0',
+  paperLink: 'Source Paper',
   documentTitle: 'Biomass burial siting tool · Carbon Containment Lab',
 
   gate:
@@ -41,20 +42,20 @@ export const COPY = {
   biomassMetricLabel: 'Colour counties by',
   biomassMetricOptions: {
     acres: 'Acres for treatment',
-    bdmt: 'Bone-dry metric tonnes',
+    bdmt: 'Bone dry metric tons',
   },
-  /** Gloss on first appearance, per 03 §14. */
-  bdmtGloss: 'A bone-dry metric tonne is a tonne of biomass with the water removed.',
   beccsScenarioLabel: 'Removal scenario',
   beccsScenarioOption: (pct: number) => `${pct}% removal`,
   beccsGloss:
-    'BECCS is bioenergy with carbon capture and storage — burning biomass for ' +
-    'energy and storing the CO₂ underground.',
+    'Bioenergy with carbon capture and storage, as modeled by the Biofuel ' +
+    'Infrastructure, Logistics, and Transportation (BILT) model, as cited in ' +
+    'Roads to Removal (2023).',
   thinningNote: 'Federally designated priority treatment areas. Reference layer.',
 
   soilColumnHeading: 'Burial depth',
-  soilColumnCaption: 'Minimum required soil cover.',
-  soilColumnHelp: 'Only areas where required cover is at or below this value are shown.',
+  soilColumnCaption: 'Minimum required soil cover depth.',
+  soilColumnHelp:
+    'Only areas where required cover depth is at or below this value are shown.',
   soilColumnAria: 'Maximum displayed soil cover, in metres',
   soilColumnAnnounce: (metres: string) => `Maximum displayed cover ${metres}`,
 
@@ -87,7 +88,7 @@ export const COPY = {
     'Slopes over 40% and distances beyond 0.5 mi are excluded from the ' +
     'underlying model.',
 
-  notInResidueModel: 'Not in the residue model',
+  notInResidueModel: 'Not selected as highest priority treatment area',
   countyNotModelled: 'This county is not in the residue model.',
 
   resultsHeading: 'Results',

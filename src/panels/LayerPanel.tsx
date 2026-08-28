@@ -63,11 +63,6 @@ export function LayerPanel() {
             <option value="acres">{COPY.biomassMetricOptions.acres}</option>
             <option value="bdmt">{COPY.biomassMetricOptions.bdmt}</option>
           </select>
-          {biomassMetric === 'bdmt' && (
-            <div className="caption" style={{ marginTop: 6 }}>
-              {COPY.bdmtGloss}
-            </div>
-          )}
         </div>
       </LayerRow>
 

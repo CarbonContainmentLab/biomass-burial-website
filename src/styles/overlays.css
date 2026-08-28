@@ -62,6 +62,20 @@
 /* Inside the h1 so it stays part of the page's one heading, but stepped back:
    smaller, secondary ink, regular weight. The version is a fact about the tool,
    not part of its name. */
+/* `margin-left: auto` rather than a spacer element: the header is a flex row
+   with two children, so the gap belongs to the link, not to an empty div. */
+.header-link {
+  margin-left: auto;
+  flex: none;
+  font-size: 13px;
+  font-weight: var(--weight-medium);
+  color: var(--text-secondary);
+  white-space: nowrap;
+}
+.header-link:hover {
+  color: var(--navy-b);
+}
+
 .brand-version {
   font-size: 12px;
   font-weight: var(--weight-regular);

@@ -1,0 +1,89 @@
+POINTING burial.carboncontainmentlab.org AT THE BIOMASS BURIAL SITING TOOL
+=========================================================================
+
+The site is hosted on GitHub Pages. To serve it from a carboncontainmentlab.org
+address, one DNS record has to be added. That is the only change needed inside
+GoDaddy -- nothing else about the domain, and no existing record, is touched.
+
+The domain's DNS is managed at GoDaddy (its nameservers are ns05 and
+ns06.domaincontrol.com).
+
+
+THE RECORD TO ADD
+-----------------
+
+  GoDaddy -> My Products -> carboncontainmentlab.org -> DNS -> Add New Record
+
+      Type   CNAME
+      Name   burial
+      Value  carboncontainmentlab.github.io
+      TTL    1 Hour  (the default is fine)
+
+  Save.
+
+
+THREE THINGS GODADDY MAKES EASY TO GET WRONG
+--------------------------------------------
+
+1. "Name" is only the word `burial`. Not the whole address. GoDaddy adds the
+   domain itself, so entering the full name produces
+   burial.carboncontainmentlab.org.carboncontainmentlab.org, which will not
+   work and is hard to spot afterwards.
+
+2. "Value" is `carboncontainmentlab.github.io` and nothing else. No https://,
+   no repository name on the end, no trailing slash. It is the organisation's
+   GitHub address, not the address of the site itself.
+
+3. If a record for `burial` already exists -- of any type -- GoDaddy will
+   refuse to add a second one. Delete the old record first, or edit it in
+   place rather than adding a new one.
+
+This is a subdomain, so a CNAME record is the correct and only kind needed.
+(Apex domains -- carboncontainmentlab.org with no prefix -- require a
+different setup using A records. That is not what is being done here.)
+
+
+CHECKING IT WORKED
+------------------
+
+DNS changes at GoDaddy usually take a few minutes and occasionally up to an
+hour. From any command prompt:
+
+      nslookup burial.carboncontainmentlab.org
+
+  Before:  "Non-existent domain"
+  After:   an answer mentioning carboncontainmentlab.github.io
+
+The website itself will not load correctly the moment DNS resolves -- see
+below.
+
+
+AFTER THE RECORD EXISTS, A DEVELOPER MUST DO ONE MORE THING
+-----------------------------------------------------------
+
+The site is currently built to be served from
+
+      carboncontainmentlab.github.io/biomass-burial-website/
+
+and the address it is built for is baked into the files at build time. Moving
+it to the custom domain therefore needs a matching change in the repository
+(CarbonContainmentLab/biomass-burial-website), in a single commit:
+
+  1. In .github/workflows/deploy.yml, change
+         BASE_URL: /biomass-burial-website/
+     to
+         BASE_URL: /
+
+  2. Re-create the file public/CNAME containing exactly one line:
+         burial.carboncontainmentlab.org
+
+Then re-run the "Deploy" workflow from the repository's Actions tab.
+
+Doing only one of those two, or doing them before the DNS record exists, gives
+a blank page rather than an error -- so it is worth doing them together and in
+that order. The workflow file carries a note at the relevant line saying the
+same thing.
+
+Finally, in the repository under Settings -> Pages, tick "Enforce HTTPS" once
+GitHub shows the domain as verified. The certificate takes a few minutes to
+issue after that.

@@ -43,10 +43,10 @@ describe('county options', () => {
     expect(options.map((o) => o.name)).toEqual(['Apache', 'La Paz']);
   });
 
-  it('shows counties outside the residue model, disabled, with a reason', () => {
+  it('shows counties that are not priority treatment areas, disabled, with a reason', () => {
     const laPaz = countyOptionsForState(file, '04').find((o) => o.geoid === '04012');
     expect(laPaz?.disabled).toBe(true);
-    expect(laPaz?.reason).toBe('Not in the residue model');
+    expect(laPaz?.reason).toBe('Not selected as highest priority treatment area');
 
     const apache = countyOptionsForState(file, '04').find((o) => o.geoid === '04001');
     expect(apache?.disabled).toBe(false);
