@@ -19,6 +19,43 @@ export const COPY = {
   /* Rendered smaller and in secondary ink beside the title, not as part of it. */
   brandVersion: 'v1.0',
   paperLink: 'Source Paper',
+  tourOpen: 'Tutorial',
+  tourClose: 'Close',
+  tourNext: 'Next',
+  tourBack: 'Back',
+  tourDone: 'Done',
+  tourStepOf: (n: number, total: number) => `${n} of ${total}`,
+  /**
+   * One sentence each. The tour points at things that are already on screen,
+   * so it says what a region is *for* rather than restating its label.
+   */
+  tourSteps: [
+    {
+      title: 'Data layers',
+      body:
+        'Turn the modelled layers on and off. Biomass, wildfire hazard and ' +
+        'priority thinning each colour the map a different way.',
+    },
+    {
+      title: 'Burial depth',
+      body:
+        'The map shows where burial needs at most this much cover. Drag the ' +
+        'handle to hide the places that need more.',
+    },
+    {
+      title: 'The map',
+      body:
+        'Hover a county to see its depth at a glance, or click one to load it ' +
+        'into the panel on the right.',
+    },
+    {
+      title: 'Search further',
+      body:
+        'County statistics reports what one county holds. Best burial site ' +
+        'searches outward from a point you choose for the shallowest ' +
+        'reasonable burial or BECCS facility.',
+    },
+  ],
   documentTitle: 'Biomass burial siting tool · Carbon Containment Lab',
 
   gate:

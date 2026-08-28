@@ -37,6 +37,7 @@ export interface Actions {
   setLeftOpen: (open: boolean) => void;
   setRightOpen: (open: boolean) => void;
   setPicking: (picking: boolean) => void;
+  setTourOpen: (tourOpen: boolean) => void;
 
   setHoverGeoid: (geoid: string | null) => void;
 
@@ -84,7 +85,7 @@ export const DEFAULT_STATE: AppState = {
   beccsScenario: 25,
   maxDepth: meters(MAX_DEPTH_MAX),
   mode: 'county',
-  ui: { leftOpen: true, rightOpen: true, picking: false },
+  ui: { leftOpen: true, rightOpen: true, picking: false, tourOpen: false },
   hover: { geoid: null },
   county: { stateFips: null, geoid: null, roadIdx: null, slopeIdx: null },
   site: {
@@ -130,6 +131,7 @@ export const useStore = create<Store>()((set) => ({
   setLeftOpen: (leftOpen) => set((s) => ({ ui: { ...s.ui, leftOpen } })),
   setRightOpen: (rightOpen) => set((s) => ({ ui: { ...s.ui, rightOpen } })),
   setPicking: (picking) => set((s) => ({ ui: { ...s.ui, picking } })),
+  setTourOpen: (tourOpen) => set((s) => ({ ui: { ...s.ui, tourOpen } })),
 
   setHoverGeoid: (geoid) =>
     set((s) => (s.hover.geoid === geoid ? s : { hover: { geoid } })),

@@ -107,7 +107,7 @@ export function SoilColumn() {
   const label = fmtMeters(maxDepth);
 
   return (
-    <section className="card">
+    <section className="card" data-tour="depth">
       <div className="card-body">
         {/* Heading and readout share a line: on a horizontal bar the value has
             nowhere else to sit, and it is the row's most-read number. */}

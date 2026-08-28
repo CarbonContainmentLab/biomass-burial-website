@@ -81,6 +81,8 @@ export interface AppState {
     rightOpen: boolean;
     /** Mode 2 click-to-set is armed. */
     picking: boolean;
+    /** The guided tour. Chrome state, never serialised to the URL. */
+    tourOpen: boolean;
   };
 
   hover: {

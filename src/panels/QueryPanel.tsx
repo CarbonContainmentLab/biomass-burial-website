@@ -15,6 +15,7 @@ export function QueryPanel() {
   return (
     <aside
       className="rail-right"
+      data-tour="query"
       data-open={open}
       aria-label={mode === 'county' ? COPY.tabCounty : COPY.tabSite}
       aria-hidden={!open}

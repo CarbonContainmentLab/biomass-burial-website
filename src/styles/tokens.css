@@ -128,6 +128,8 @@
   --z-rail: 1000;
   --z-edge: 1001;
   --z-header: 1200;
+  /* Above the header, because the tour frames the header button too. */
+  --z-tour: 1400;
 }
 
 /* The depth ramp lives in one place per medium: these stops mirror

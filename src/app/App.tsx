@@ -10,6 +10,7 @@
 import { useEffect } from 'react';
 
 import { Header } from '../chrome/Header';
+import { Tour } from '../chrome/Tour';
 import { resetFailedAssets } from '../data/source';
 import { COPY } from '../lib/copy';
 import { MapView } from '../map/MapView';
@@ -73,6 +74,7 @@ function Stage() {
 
         <StatusCards />
       </div>
+      <Tour />
     </div>
   );
 }

@@ -33,7 +33,7 @@ export function LayerPanel() {
   const hazardLabels = manifest ? whpClassLabels(manifest) : FALLBACK_WHP_LABELS;
 
   return (
-    <section className="card">
+    <section className="card" data-tour="layers">
       <div className="card-head">
         <span className="eyebrow">{COPY.layersHeading}</span>
         <button
