@@ -7,10 +7,12 @@
  * time the button is pressed, and the decode would block the first paint of the
  * result card.
  *
- * Ranking is **shallowest first, nearest as tiebreak** (03 §12). Not the mockup's
- * `score = depth + miles * 0.012`, which silently trades a metre of cover against
- * 83 miles of haul, and not a distance-first sort — the question the panel asks is
- * "where is burial easiest near here", and cover thickness is what "easiest" means.
+ * Ranking is by **cost**: see `SCORE` below. It supersedes the "shallowest
+ * first, nearest as tiebreak" rule of 03 §12, which answered "where is burial
+ * easiest near here" but could not say whether easier was worth farther. The
+ * mockup's `score = depth + miles * 0.012` asked the right question with an
+ * invented exchange rate — a metre of cover against 83 miles of haul. The rate
+ * here is derived from the TEA instead.
  */
 
 /// <reference lib="webworker" />
@@ -107,6 +109,36 @@ export function decodeSites(
   return { xs, ys, depths: new Uint16Array(cm) };
 }
 
+/* ---- Scoring -------------------------------------------------------------
+ *
+ * A site is worth what it saves. Both of its costs are priced by the TEA in the
+ * same unit — dollars per tonne of CO2e — so they can simply be subtracted from
+ * each other rather than weighted by taste:
+ *
+ *   depth     A percentage point of carbon efficiency is worth $0.7774
+ *             (K = $77.74 per unit). A metre of burial cover costs 3.09
+ *             percentage points at average soil carbon (slope 0.0309), so a
+ *             metre costs 3.09 x 0.7774 = $2.402.
+ *   distance  $0.1023 per km (alpha, Table S2).
+ *
+ * The exchange rate between them, 0.1023 / 2.402, is what the ranking really
+ * is: **a farther site must be 4.3 cm shallower for every extra kilometre**, or
+ * equivalently a metre of extra depth only pays for itself if it saves 23.5 km
+ * of travel.
+ *
+ * BASE is the intercept from the TEA. It shifts every score equally and so has
+ * no effect on which site wins; it is kept because it makes a score readable as
+ * an efficiency figure rather than as a bare penalty.
+ *
+ * Constants are folded into the units the loop already holds — centimetres and
+ * metres — so ranking 871,094 sites costs no divisions.
+ */
+const SCORE_BASE = 62.54;
+/** $2.402 per metre, expressed per centimetre. */
+const COST_PER_DEPTH_CM = 0.024_02;
+/** $0.1023 per km, expressed per metre. */
+const COST_PER_DISTANCE_M = 0.000_102_3;
+
 /**
  * Shallowest first, nearest as tiebreak. Exported and pure for the same reason.
  *
@@ -123,16 +155,21 @@ export function rankSites(
   const count = depths.length;
 
   let bestIndex = -1;
-  let bestDepth = Infinity;
+  let bestScore = -Infinity;
   let bestDistSq = Infinity;
   let scanned = 0;
 
   for (let i = 0; i < count; i++) {
     const depth = depths[i]!;
-    // Depth first: it is the primary sort key and the cheapest test, and it
-    // rejects most of the index before any arithmetic happens. A candidate
-    // deeper than the current best can never win, so it is skipped outright.
-    if (depth > maxDepthCm || depth > bestDepth) continue;
+    if (depth > maxDepthCm) continue;
+
+    /* The score this candidate would earn at zero distance, which is the most
+       it can possibly earn. If that ceiling cannot beat the incumbent, neither
+       can the candidate, so the position lookups and the square root are
+       skipped. This replaces the old `depth > bestDepth` shortcut, which is no
+       longer sound: under a cost rule a deeper site can win by being nearer. */
+    const ceiling = SCORE_BASE - COST_PER_DEPTH_CM * depth;
+    if (ceiling <= bestScore) continue;
 
     // Square prefilter before the circle, so the common rejection costs two
     // comparisons rather than two multiplies.
@@ -145,12 +182,13 @@ export function rankSites(
     if (distSq > radiusSq) continue;
     scanned++;
 
-    // Written out rather than relying on the `depth > bestDepth` guard above to
-    // have made the equality case implicit. The two clauses *are* the ranking
-    // rule, and they should be readable as such.
-    if (depth < bestDepth || (depth === bestDepth && distSq < bestDistSq)) {
+    const score = ceiling - COST_PER_DISTANCE_M * Math.sqrt(distSq);
+    // Exact ties are vanishingly unlikely with continuous scores, but two sites
+    // of equal depth and equal distance are not, and the nearer-wins rule is
+    // what the old ranking would have done.
+    if (score > bestScore || (score === bestScore && distSq < bestDistSq)) {
       bestIndex = i;
-      bestDepth = depth;
+      bestScore = score;
       bestDistSq = distSq;
     }
   }
